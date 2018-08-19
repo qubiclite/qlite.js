@@ -32,12 +32,12 @@ const QLITE = new Qlite('https://qlnode.org:17733');
 ```js
 var my_qubic = "GAPGBVIBDKTGZ9BVLCZYWPZAFMIXBDLCUTXOC9NEJ9HGDKZYGRPQVIHMZXRXCDLZIFXGECZBFSTTNA999";
 
-QLITE.qubic_read(function(resp, err) {
+QLITE.qubic_read(function(res, err) {
 
   if(err) // something went wrong
     console.log(err);
   else // everything is fine
-    console.log("qubic code: " + resp['code']);
+    console.log("qubic code: " + res['code']);
   
 }, my_qubic);
 ```
@@ -66,6 +66,7 @@ QLITE.qubic_read(function(resp, err) {
     * [fetch_epoch](#fetch_epoch)
     * [export](#export)
     * [import](#import)
+    * [qubic_consensus](#qubic_consensus)
 * Oracle
     * [oracle_create](#oracle_create)
     * [oracle_delete](#oracle_delete)
@@ -103,13 +104,13 @@ Determines the quorum based result (consensus) of a qubic's epoch.
 | `callback` | `function` | 
 | `qubic`  | `string (trytes{81})` | qubic to fetch from
 | `epoch`  | `int (integer{0-2147483647})` | epoch to fetch
-| `epoch_max`  (opt.) | `int (integer{0-2147483647})` | if used will fetch all epochs from 'epoch' up to this value
+| `epoch_max`  (opt.) | `int (integer{-1-2147483647})` | if used will fetch all epochs from 'epoch' up to this value
 #### example call
 ```js
 QLITE.fetch_epoch(function(resp, err) {
   if(err) { console.log(err); /* handle error */ }
   else { /* process response ... */ }
-}, 'RZEXGBBJFOSBFAPXFMPZLXXUNGHDAGWOSRNAFCNXLTWBRDQVLOXKQAUKD9TU9WIOACL9PDVXM9GZIFHCQ', 4, 7);
+}, 'LFVEZBELDDLFKCUMQRJSTDGKKJQFOUGTSUXPNGQTHPQK9JDZVKXEG9VBHTQFAVIBZ9EQOGZOPZMMIZELV', 4, 7);
 ```
 #### example response
 ```json
@@ -128,11 +129,11 @@ transforms an entity (iam stream, qubic or oracle) into a string that can be imp
 QLITE.export(function(resp, err) {
   if(err) { console.log(err); /* handle error */ }
   else { /* process response ... */ }
-}, 'HYXJIXIRMZATNSIO9TRYXWPXPHZPCSFKKPDNPNGGRSWLNIQMIRWECALPTPICDCOX9TKKYAYXFETGNDXSY');
+}, 'RFKSP9OLQESUZW9JKXJOJZZY9CASVMNNKFYGUOVUFIZKMPHLLTAGKAZIPYRNKLDARJLZWPXJGWGFAMYX9');
 ```
 #### example response
 ```json
-{"duration":42,"success":true,"export":"q_HWB9NTPGFVMFQMUKQTQHDELCHUXNEPLHBQXJTWGS9IEYHUDCKOHWOKXNZDBKB9UTRISVXACDYCQAZG999_GUACEZHVFAEZEYGUACEZGQFEFFGOAGHSDAHCFCEZGUACEZGDFAABABEYEVJVIDABGBJLFQGNICDRHUBCGSEEDWDZEOFPCDICHGEHHOEYCPGCHJAACCIBGKIZHPINHKGGIBETIJHHANIIESCLCRENCGGUEOCXBBIFJCDJABHFAAGBGYJFEKIWIQCDJBAZIABLBKBFBFEAFCJRFOGGCOHZCHBPDJEWCDCSFZEQHFIHDZCSBOBMFTFNFCETADEODFCRGCCPFAGZIEFRIKFUARGWEOJLELBUGPIRDJGOEHEKGGFBFXBDDDHSEZCTFAFTEYAXIQIAAPFTGHFJCYBYASCFACBIEDAEFJEIIIGAENFAABABEYEPDTBGAFDIBBHHDQCXCIBRIMHACEIHCFJPAUBVCHESHEECACERIHHWFJHHFFACIXIBIJIHAOCGDGIJHZDYJHFFFOABAACAHTFUJHGHEAHWGMFUFRCDDBFHGWAMCUBMDTHGFUJQALIEJSANGMDSBJBUGCGPBZBMJLARJEBJJVFJESGFGZISEJETISJQEZGIHFCYBKEJCKBOIBAQAJBOADDRDTIKDXBFFEASALIWIOAAJRIFGJIUEZHWHFEWDBHTGOFCFUFAFSFMAUFKINEIJCFDGXJSFJHVDGBJJMBKJMFMJIFPJL"}
+{"duration":42,"success":true,"export":"q_9YWUAMSIQRGJODOGHPIUWWULQSPFYIAWWMZSHAMRKCDSUPGGWYRICESWZJUNHZOEMGSFASSGNXIQJK999_GUACEZHVFAEZEYGUACEZGQFEFFGOAGHSDAHCFCEZGUACEZGDFAABABEYEVJVIDABGBJLFQGNICDRHUBCGSEEDWDZEOFPCDICHGEHHOEYCPGCHJAACCIBGKIZHPINHKGGIBETIJHHANIIESCLCRENCGGUEOCXBBIFJCDJABHFAAGBGYJFEKIWIQCDJBAZIABLBKBFBFEAFCJRFOGGCOHZCHBPDJEWCDCSFZEQHFIHDZCSBOBMFTFNFCETADEODFCRGCCPFAGZIEFRIKFUARGWEOJLELBUGPIRDJGOEHEKGGFBFXBDDDHSEZCTFAFTEYAXIQIAAPFTGHFJCYBYASCFACBIEDAEFJEIIIGAENFAABABEYEPDTBGAFDIBBHHDQCXCIBRIMHACEIHCFJPAUBVCHESHEECACERIHHWFJHHFFACIXIBIJIHAOCGDGIJHZDYJHFFFOABAACAHTFUJHGHEAHWGMFUFRCDDBFHGWAMCUBMDTHGFUJQALIEJSANGMDSBJBUGCGPBZBMJLARJEBJJVFJESGFGZISEJETISJQEZGIHFCYBKEJCKBOIBAQAJBOADDRDTIKDXBFFEASALIWIOAAJRIFGJIUEZHWHFEWDBHTGOFCFUFAFSGZDUDZBIFCAFGQGFCDGTBSGNENFIGUCPATHVHHJF"}
 ```
 ***
 ### `import()`
@@ -166,11 +167,11 @@ Reads the specification of any qubic, thus allows the user to analyze that qubic
 QLITE.qubic_read(function(resp, err) {
   if(err) { console.log(err); /* handle error */ }
   else { /* process response ... */ }
-}, 'TJVJNANJMWYEUHWWISUBTJZYEUXBDXGFGIHXBVIKOERTYUQP9YSWNMLPJSMREPFITMSVBGUYTVZTHVSPS');
+}, 'ALSUSJOMHHD9WYJLECNEANLALOWWWAPVQYTWRS9GMAGGRBZCFAFFGQZGJBWVXOYQHOQKCLRQSUGEGJLSR');
 ```
 #### example response
 ```json
-{"assembly_list":["KIOBUTGIPC9LVXZKVZESIWAWDZWAMDFNIRKYMIGZLQEFBFFNBYXMRRJNZQSEQHVSWPIOVHSMJWEFDR999"],"duration":42,"code":"e = epoch;\ne += 42;\nreturn(e);","hash_period_duration":15,"result_period_duration":5,"success":true,"runtime_limit":10,"execution_start":1534314873,"id":"OPVUHLMORYBPOJDCYKLZOXCPKMQUQPRLWUEJZAOVKAWHZIVKG9IBADMAPHNNMIICKRN9YAGMEBNYJC999","version":"ql-0.4-SNAPSHOT"}
+{"assembly_list":["UJ9LTCWQCGFDITAKSSRUYYYKURJBTVOAMHMICERWGSJVPGXNMCJGTKMAHPVPFYIUHNLTA9GYCWZJKINRH"],"duration":42,"code":"return(epoch^2);","hash_period_duration":20,"result_period_duration":10,"success":true,"runtime_limit":10,"execution_start":1534665265,"id":"JABQZVSAQGNCTXGUBFDMCXXLYDGUJTQKMIMZLPF9LNQCAK9PDXHYZGFEBMJZCCXGMQQWKRNRETXG9F999","version":"ql-0.4-SNAPSHOT"}
 ```
 ***
 ### `qubic_list()`
@@ -188,7 +189,7 @@ QLITE.qubic_list(function(resp, err) {
 ```
 #### example response
 ```json
-{"duration":42,"success":true,"list":[{"specification":{"code":"return('hello world');","hash_period_duration":20,"result_period_duration":10,"execution_start":1534362199,"run_time_limit":10,"type":"qubic transaction","version":"ql-0.4-SNAPSHOT"},"id":"GMQXWESYWYNVHMKXPTVMCEEMFLDLJGLBIP9OBPC9AHBVXFGEBEGAIJVXKHFARY9JWJTFYBDFGYTJVB999","state":"assembly phase"}]}
+{"duration":42,"success":true,"list":[{"specification":{"code":"return('hello world');","hash_period_duration":20,"result_period_duration":10,"execution_start":1534665266,"run_time_limit":10,"type":"qubic transaction","version":"ql-0.4-SNAPSHOT"},"id":"ISCLDZKURMVILRDNS9YFTMWZUADOAHNAYLLGNGZL9LTVPJEDHAKQGCGBCFALGAPRYIJBVBYCK9OPVT999","state":"assembly phase"}]}
 ```
 ***
 ### `qubic_create()`
@@ -211,7 +212,7 @@ QLITE.qubic_create(function(resp, err) {
 ```
 #### example response
 ```json
-{"duration":42,"success":true,"qubic_id":"ZIONOINEOUHFYLILWYJTGGYHPJAWQMGEVRQ9NEUANHXRTYWHTMZXPNAQXXZWROPPCAVMFFFXUXDQJKCOR"}
+{"duration":42,"success":true,"qubic_id":"XIJZHOWQ9BW9RTBCIZBFVKMJADAUKVZSAVCPHJ9NBKXGWERSULBOCPRFPJVHNIDVFSJCFXVQAWLYXHKN9"}
 ```
 ***
 ### `qubic_delete()`
@@ -226,7 +227,7 @@ Removes a qubic from the persistence (private key will be deleted: cannot be und
 QLITE.qubic_delete(function(resp, err) {
   if(err) { console.log(err); /* handle error */ }
   else { /* process response ... */ }
-}, 'BCFUXUZOTUZDQIFCVTYJRXJCMBNOFTVZATWJCIGDIGBKUTSXCDEFYZQQPVAIBTHAV9JGTNAANBOFVMFHL');
+}, 'OOXDJSGMBAIPGDIEAMFRPVTTAFKTB9XCLMAKMKCB9QIZSONLBOUSJFIMYOFIWHTWDQNHQ9NMEOTQBDYG9');
 ```
 #### example response
 ```json
@@ -245,11 +246,11 @@ Lists all incoming oracle applications for a specific qubic, response can be use
 QLITE.qubic_list_applications(function(resp, err) {
   if(err) { console.log(err); /* handle error */ }
   else { /* process response ... */ }
-}, 'YZRHOWEEXXJFAZCOYICNVAAQROSUZNHAUFRQSLJOZPIMWKDACLCFMEAPTJHXNXHJQAIKKXCMVY9UOFZWS');
+}, 'CBNJA9WSBIVHRJXTYGEIGIBNYKGRFQZTCEVVJPZXZLGYEPPIRPVHCGBKOCHDUHXSZBAGZYIG9SLIBM9JB');
 ```
 #### example response
 ```json
-{"duration":42,"success":true,"list":["ZDQYWZNNRVRLFHDIIMTFKPXWNJIJIIFSVUEQOC9WFPSWO9NSV9TAKLUILGZRVRGOGDDMQWUUNC9GENBEM","ZZKHSABGHUZGVVZXMNLZOGNSBYHLCNQM99OLLLTIBQHZKKTCVXRZHOXZYJJRNWIYLKUV9WPFDNCGGOVHW"]}
+{"duration":42,"success":true,"list":["9ZTPZXZLEYEOAURXJWWLQEALUNPOHSHSSKAHXPGYPZCTRDKEPIERNXXOYVQAZJIUJHDXFGQQKZVEYTLFX","IGYDFQYDSRKJNSHKXPHHWYW9CGXFWVYCUUVCFALCGHZJVZWZJ9R9IH9KGX9KNAQBCCAXMZIRQ9FZFSXIH"]}
 ```
 ***
 ### `qubic_assemble()`
@@ -265,7 +266,7 @@ Publishes the assembly transaction for a specific qubic.
 QLITE.qubic_assemble(function(resp, err) {
   if(err) { console.log(err); /* handle error */ }
   else { /* process response ... */ }
-}, 'ZVTSUIZBDTZDN9BEAJIWHWZSYHGLANATYHNELEU9ONTHCUZLW9SGJWJHSDCW9KIGIDODTEGZC9YLJBYJO', ['LABUSNLJJA9POMWZNXVCILONC9UACHS9KWFLBBOGPBSA9STMVFFANOO9QYMBJLIPAGGO9KUVSOWXHXPES', 'HJ9QWZIRKBNXVKGNHDETNILVNKTPWNMYUEUDPVGAQXIANYFSIQROGPADLLDTD9GMD9A9JESMKYBSSDHCA']);
+}, 'USIQMO9KCAVYBPV9NCAFGPDGUCKFQDDQXKWMQRMHPSTGVUJXJXPITRJDNRUFTAQKYMLTPKH99EENGUOAE', ['LHCHDS9BTAGEAFFPHXZCK9BI9TFXSRKVQWCSRKQKGVY9CMNOMNMKLGGTOIZDEEZMQRBDCDQ9UXEE9SCHL', 'BHPTUEIEZFZFOJBTTLLCBIAIPORYTGIKNNGMPAVTQSCQ9OVVPYUUCJRZJCJHTNHINSPGTQIXFHOCKFBKA']);
 ```
 #### example response
 ```json
@@ -292,6 +293,27 @@ QLITE.qubic_test(function(resp, err) {
 {"result":"9","duration":42,"success":true,"runtime":12}
 ```
 ***
+### `qubic_consensus()`
+Determines the quorum based consensus of a qubic's oracle assembly at any IAM index.
+#### parameters
+| name | type | description |
+| - | - | - |
+| `callback` | `function` | 
+| `qubic`  | `string (trytes{81})` | qubic to find consensus in
+| `keyword`  | `string (trytes{0-30})` | keyword of the iam index to find consensus for
+| `position`  | `int (integer{0-2147483647})` | position of the iam index to find consensus for
+#### example call
+```js
+QLITE.qubic_consensus(function(resp, err) {
+  if(err) { console.log(err); /* handle error */ }
+  else { /* process response ... */ }
+}, 'QSYIXAXPYUISEBGPU9VXPESTDDYBSMEWNTDRLHUNIXIQTEWCWFNHRMOUSAIQMURVOLXRUG9ARMXNUTM9Q', 'F', 4);
+```
+#### example response
+```json
+{"result":"{'color': 'red'}","duration":42,"success":true,"index_keyword":"COLORS","quorum":3,"quorum_max":4,"index_position":2018}
+```
+***
 ### `oracle_create()`
 Creates a new oracle and stores it in the persistence. Life cycle will run automically, no more actions required from here on.
 #### parameters
@@ -304,11 +326,11 @@ Creates a new oracle and stores it in the persistence. Life cycle will run autom
 QLITE.oracle_create(function(resp, err) {
   if(err) { console.log(err); /* handle error */ }
   else { /* process response ... */ }
-}, 'JYKRRXQYDLS9FLBELG9ZKTEDPOMSJXTUJKAGBIW9WSMUSTQAHGILHOXAFGXNGPMEOWBZZCCEVDYDBJJDU');
+}, 'DJFAQEEBIV9HPXTRRHZNJZVZZYNVAVTGJUJMNOH9EBCIRZAFRNYBL9HUBJAB9AXSENGBAKDLPRHEMAXYJ');
 ```
 #### example response
 ```json
-{"duration":42,"oracle_id":"BQLG9MTNYGVUPOZWVKFFCITXOGNYQJQLRRMXPPKJOPLNFRYWGVDDMRVUBQXTXRVYAUXYCUPTDHRNUFAMV","success":true}
+{"duration":42,"oracle_id":"BJ9MKOJBECBRZGTQTANXYRXSEUDKDJUSMNJZRVYBMAXI9RNYTDAHFZYYWYWBV9DGBKLRCMAIZRBPRGRTX","success":true}
 ```
 ***
 ### `oracle_delete()`
@@ -323,7 +345,7 @@ Removes an oracle from the persistence (private key will be deleted, cannot be u
 QLITE.oracle_delete(function(resp, err) {
   if(err) { console.log(err); /* handle error */ }
   else { /* process response ... */ }
-}, 'QJLYPXPINFGFOQUNWJVCPRKKSBIEQYY9XUSOHZKZNGICKUEXZYGQSNQNTUNLBRHUHSARRNAZWLGHIOJLU');
+}, 'TBMJHCDHWDFNL9ONGIUAZONLUEVEHYUAWIVNFPIWOPMMTKM9RZLGXUQAUOFELANYHBNUIYWXSMFUKSW9F');
 ```
 #### example response
 ```json
@@ -345,7 +367,7 @@ QLITE.oracle_list(function(resp, err) {
 ```
 #### example response
 ```json
-{"duration":42,"success":true,"list":["TQQ9LZVCPWWTSJBQMRXBHNOSOQI9LZMKBIOFUUGBCJNLJ9ZICWWCH9WTNBKI9ZYXMDBIWXOOTYWTTCJJI","QFUNXJNCEFJUECMSVFJFXROFFRCSWHBTKADFWJC9VXUFCXFWTOQHUKYZUNYPGQGARHGGKRHXSWWUIUAYH"]}
+{"duration":42,"success":true,"list":["SWIFDQJ9VE9UBHOHPUIAYRBAIOEDVD9KQGRUOWCUPASYHIYFUOGIE9QXZWVINRCRDRPCOQXQHTELFLFCL","DNUWVVFBOJBKANQUQNVA9XNHATYMQDCFWDVHGHIKZVPWOLVOGA9KMXXQMOCSYNIYBWFLXGKIZWBLXZHP9"]}
 ```
 ***
 ### `oracle_pause()`
@@ -360,7 +382,7 @@ Temporarily stops an oracle from processing its qubic after the epoch finishes. 
 QLITE.oracle_pause(function(resp, err) {
   if(err) { console.log(err); /* handle error */ }
   else { /* process response ... */ }
-}, 'KCDKEEUJINQPKOHIPAJBCGHRLGDVULYQJMRGUAYMDRZURSR9TZYXXYZIJDBMOCNZUQIUUTYHKZGBGMKJJ');
+}, 'TLIGUCVEYKQCKRORRNDKVDDERLJZHVDY9TUOPDXMZFDJBAZDKXNODXMDCHO9HXKZEWWKPVSKGEAIROPIN');
 ```
 #### example response
 ```json
@@ -379,7 +401,7 @@ Restarts an oracle that was paused with 'oracle_pause', makes it process its qub
 QLITE.oracle_restart(function(resp, err) {
   if(err) { console.log(err); /* handle error */ }
   else { /* process response ... */ }
-}, 'BZD9D9KIQLNPESBCHPWGUWCHIHRLJCZK9QKITS9EUCWLKETHSXATWOLMN9WPUUDZNOETUPCLDPTGJEBNC');
+}, 'AJFNZZHTRHXR9FKITEENGISWYCFYPWAK9NLKCDTJ9RQLZFVNDIDBFBZKEG9JZLYT9CGBAIQDXEEQOGZUP');
 ```
 #### example response
 ```json
@@ -401,7 +423,7 @@ QLITE.iam_create(function(resp, err) {
 ```
 #### example response
 ```json
-{"duration":42,"iam_id":"NOGOFYEZEEPOHOBPUFNZBXDCVCOPXOVEMSVXDGVGFETWNJLBX9LHXFNXCMGCRUGDJYSM9FDTVRTZGNGDW","success":true}
+{"duration":42,"iam_id":"BAQQPJAXYMFY9WRORMHUQCFDCXDBKBWPKBVZHCXYFSRFBQDZFBBAZKAFQONXQVYCHHRZRBPJUO9ODTJTZ","success":true}
 ```
 ***
 ### `iam_delete()`
@@ -438,7 +460,7 @@ QLITE.iam_list(function(resp, err) {
 ```
 #### example response
 ```json
-{"duration":42,"success":true,"list":["HCMVAEGEBM9CJIZPZBBXZKUABQVCUYNEPFNBMDLEC9CCRZJYDHJYIPA9EXLGEPHIOOUQFOEECQ9EVXVZM","ZOCRXTRYX9TTOAQTOKWIUOHJCGJAQZPTBOR9UESJHKCNYELKH9JTGFDQG9HGXNVETJLNYKKD9PZTTLSQM"]}
+{"duration":42,"success":true,"list":["COQHMLMJGMGERQPL9NLXUAGEYQV9VKERGJFQEX9FSXDZFDQHGMF9HOHVFBMIWQQLXDKXNYL9XWNVCAIIP","SWOGTUQVJIYGZGQMDHKKEQ9JBQYMDMVAGWILBKCCIIQXRREEVBDW9CLTFRRXUBXLXYRJEVNJQTTTAAJWG"]}
 ```
 ***
 ### `iam_write()`
@@ -525,7 +547,7 @@ Uninstalls an app.
 | name | type | description |
 | - | - | - |
 | `callback` | `function` | 
-| `app`  | `string (alphanumeric)` | app ID (directory name in 'qapps')
+| `app`  | `string (alphanumeric)` | app ID (directory name in 'qlweb/qlweb-0.4.1/qapps')
 #### example call
 ```js
 QLITE.app_uninstall(function(resp, err) {
